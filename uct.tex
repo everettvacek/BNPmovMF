@@ -6,6 +6,13 @@
 \usepackage[T1]{fontenc}
 \usepackage{csquotes}
 \usepackage{biblatex}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
 \addbibresource{example.bib}
 \usepackage{booktabs}
 \usetheme{Pittsburgh}
@@ -68,12 +75,28 @@ $$f(\boldsymbol{x}|\boldsymbol{\mu}, \kappa) = c_d(\kappa)e^{\kappa\boldsymbol{\
 \end{frame}
 
 %page 5
-\begin{frame}[Prepossessing BNP data]
-For BNP data each pixel is its own d-dimensional vector $\boldsymbol{X_p}$, 
+\begin{frame}{Prepossessing BNP data}
+For BNP data each pixel is its own d-dimensional elemental concentration vector, 
 $$\boldsymbol{X_p} = (X_1, X_2, ..., X_d).$$
-Where each $X_i$ corresponds to a different element. Each pixel will need to be normalized to unit length before fitting however first we must address the variance in the data.  The variance of $X_i$ for all $p$ will not necessarily be equal. vMF is a normal distribution on the hypersphere and thus assumes equal variance in each dimension so we need first scale our data. We first need to normalize this data to put it on the unit hypersphere,
+Each component, $X_i$, is that elements concentration for a given pixel and has units $\mu g/cm^2$. Normalizing $\boldsymbol{X_p}$ gives relative composition vector,
 $$ \boldsymbol{x_p} = \boldsymbol{X_p}/||\boldsymbol{X_p}||.$$
+representing the percent composition of each element in a given pixel and embedding all points in the positive orthant of the unit hypersphere. 
+\end{frame}
 
+%page 6
+\begin{frame}{3-D projections of 7-D data.}
+\begin{figure}[h]
+  \includegraphics[width=1\textwidth,height=1\textheight,keepaspectratio]{7dto3d.png}
+  \caption{XRF images of mouse fibroblasts.}
+\end{figure}
+\end{frame}
+
+%page 7
+\begin{frame}{3-D projections of 7-D data.}
+\begin{figure}[h]
+  \includegraphics[width=.8\textwidth,height=.7\textheight,keepaspectratio]{labels.png}
+  \caption{Side by side of potassium channel and labeled regions.}
+\end{figure}
 \end{frame}
 \section{\bibname}
 \begin{frame}[t, allowframebreaks]{\bibname}
