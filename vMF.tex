@@ -63,6 +63,14 @@ $$f(\boldsymbol{x}|\boldsymbol{\mu}, \kappa) = c_d(\kappa)e^{\kappa\boldsymbol{\
 \end{figure}
 \end{frame}
 
+%page 8
+\begin{frame}{Why vMF not Gaussians?}
+\begin{figure}[h]
+  \includegraphics[width=1\textwidth,height=.5\textheight,keepaspectratio]{Normalization.png}
+  \caption{In a 2D XRF projection increasing brightness may be due to overlapping regions or regions with higher concentration making it difficult to discern between the two. Because of this I chose to normalize the data and cluster only based on element composition, not concentration.}
+\end{figure}
+\end{frame}
+
 %page 4
 \subsection[Short Subsection 3 Name]{Full Subsection 3 Name}
 
@@ -78,9 +86,9 @@ $$f(\boldsymbol{x}|\boldsymbol{\mu}, \kappa) = c_d(\kappa)e^{\kappa\boldsymbol{\
 \begin{frame}{Prepossessing BNP data}
 For BNP data each pixel is its own d-dimensional elemental concentration vector, 
 $$\boldsymbol{X_p} = (X_1, X_2, ..., X_d).$$
-Each component, $X_i$, is that elements concentration for a given pixel and has units $\mu g/cm^2$. Normalizing $\boldsymbol{X_p}$ gives relative composition vector,
-$$ \boldsymbol{x_p} = \boldsymbol{X_p}/||\boldsymbol{X_p}||.$$
-representing the percent composition of each element in a given pixel and embedding all points in the positive orthant of the unit hypersphere. 
+Each component, $X_i$, is that elements concentration for a given pixel and has units $\mu g/cm^2$. 
+
+The variance of these elements will be over much different ranges, but vMF is univariate and expect normal distributions. To deal with this we scale our data using a robust scaler. Robust scaler preprocessing rescales element values to the interquartile range.
 \end{frame}
 
 %page 6
@@ -95,15 +103,7 @@ representing the percent composition of each element in a given pixel and embedd
 \begin{frame}{Why preprocess the data?}
 \begin{figure}[h]
   \includegraphics[width=1\textwidth,height=.7\textheight,keepaspectratio]{labels_compare_preprocessing.png}
-  \caption{Side by side of potassium channel and labeled regions for two different preprocessing methods. (a) No preprocessing applied (b) robust scaler preprocessing rescales element values to the interquartile range.}
-\end{figure}
-\end{frame}
-
-%page 8
-\begin{frame}{Why normalize the data?}
-\begin{figure}[h]
-  \includegraphics[width=1\textwidth,height=.5\textheight,keepaspectratio]{Normalization.png}
-  \caption{In a 2D XRF projection increasing brightness may be due to overlapping regions or regions with higher concentration making it difficult to discern between the two. Because of this I chose to normalize the data and cluster only based on element composition, not concentration.}
+  \caption{Side by side of potassium channel and labeled regions for two different preprocessing methods. Left: No preprocessing applied, right: robust scaler preprocessing rescales element values to the interquartile range.}
 \end{figure}
 \end{frame}
 
@@ -121,6 +121,19 @@ representing the percent composition of each element in a given pixel and embedd
     \item TFY as weight.
 \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Cluster correlation.}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth,height=1\textheight,keepaspectratio]{Cluster_corr.png}
+    \caption{Cluster correlations for cell \_244.}
+    \label{fig:my_label}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Warning: construction ahead.}
+    Everything beyond this point is a work in progress.
 \end{frame}
 
 %page 10
