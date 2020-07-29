@@ -27,12 +27,22 @@
 \keywords{von Mises-Fisher, clustering, bionanoprobe}
 \begin{document}
 
+%page 1
 \begin{frame}[plain]
 \maketitle
 \end{frame}
 
 \section[Short Section 1 Name]{Full Section 1 Name}
 \subsection[Short Subsection 1 Name]{Full Subsection 1 Name}
+
+%page 2
+\begin{frame}{Why cluster XRF data?}
+    \begin{itemize}
+        \item XRF gives high resolution data of element distributions in a sample.
+        \item However, finding regions of similar composition is left largely to be done by hand.
+        \item Clustering XRF data by element composition allows for automated segmentation of  images into similar regions. It also enables statistical analysis to be done within and between clustered regions as well as comparison of clustered regions between cells.
+    \end{itemize}
+\end{frame}
 
 % page 3
 \subsection[movMF image]{Mixture of vMF distributions on the 3-sphere}
@@ -44,8 +54,8 @@
 \end{figure}
 \end{frame}
 
-% page 2
-\begin{frame}{von Mises Fisher distributions}%{Subtitle}
+% page 4
+\begin{frame}{von Mises Fisher (vMF) distributions}%{Subtitle}
 Random vector $\boldsymbol{x}$ has a $d$-variate von Mises-Fisher (vMF) distribution if its probability density function is given by:
 $$f(\boldsymbol{x}|\boldsymbol{\mu}, \kappa) = c_d(\kappa)e^{\kappa\boldsymbol{\mu}^T\mathbf{x}}$$
 \begin{itemize}
@@ -63,17 +73,41 @@ $$f(\boldsymbol{x}|\boldsymbol{\mu}, \kappa) = c_d(\kappa)e^{\kappa\boldsymbol{\
 \end{itemize}
 \end{frame}
 
-%page 8
+%page 5
+\begin{frame}{Normalizing XRF data.}
+\centering
+\begin{table}[]
+\resizebox{\textwidth}{!}{\begin{tabular}{l|lllllll|l}
+         & P        & S        & K        & Ca       & Cl       & Fe       & Zn       & L2-norm  \\ \hline
+$\boldsymbol{x}$        & 0.1216 & 0.0748 & 0.5959 & 0.0054 & 0.2011 & 0.0038 & 0.0031 & 0.6450 \\
+$|\boldsymbol{x}|$ & 0.1886 & 0.1160 & 0.9239 & 0.0084 & 0.3117 & 0.0060 & 0.0048 & 1        \\       
+\end{tabular}}
+\end{table}
+\begin{itemize}
+    \item Here is an example of normalizing XRF data. 
+    \item $\boldsymbol{x}$ is unnormalized and corresponds to $\mu g / cm^2$. The L2-norm corresponds to the length of the 7D vector with (P, S, K,...) as its components.
+    \item $|\boldsymbol{x}|$ is the normalized vector with vector length = 1. Here each component value can be thought of the fractional value of that element in that pixel.
+\end{itemize}
+\end{frame}
+
+%page 6
 \begin{frame}{Why vMF not Gaussians?}
 \begin{figure}[h]
   \includegraphics[width=1\textwidth,height=.5\textheight,keepaspectratio]{Normalization.png}
-  \caption{In a 2D XRF projection increasing brightness may be due to overlapping regions or regions with higher concentration making it difficult to discern between the two. Because of this I chose to normalize the data and cluster only based on element composition, not concentration.}
+  \caption{In a 2D XRF projection increasing brightness may be due to overlapping regions or regions with higher concentration making it difficult to discern between the two. vMF normalizes each pixel such that the length of its elemental vector (2-norm) is 1. The result is clusters based on element composition, not concentration.}
 \end{figure}
 \end{frame}
 
-%page 4
-\subsection[Short Subsection 3 Name]{Full Subsection 3 Name}
+%page 7
+\begin{frame}{Our data and goals.}
+    \begin{itemize}
+        \item We took XRF images of frozen hydrated mouse fibroblast cells as varying stages of mitosis.
+        \item The goal is to determine the location and role of trace metals in the cell during mitosis. [cite]
+        \item Clustering allows one to separate out regions of the cell (i.e. the nucleus) for independent analysis. It also helps in analyzing these regions.
+    \end{itemize}
+\end{frame}
 
+%page 8
 \begin{frame}{Bionanoprobe Data.}
 \begin{figure}[h]
   \includegraphics[width=1\textwidth,height=.7\textheight,keepaspectratio]{unmasked.png}
@@ -82,6 +116,7 @@ $$f(\boldsymbol{x}|\boldsymbol{\mu}, \kappa) = c_d(\kappa)e^{\kappa\boldsymbol{\
 \end{figure}
 \end{frame}
 
+%page 9
 \begin{frame}{Masked Bionanoprobe Data.}
 \begin{figure}[h]
   \includegraphics[width=1\textwidth,height=.7\textheight,keepaspectratio]{masked.png}
@@ -90,8 +125,8 @@ $$f(\boldsymbol{x}|\boldsymbol{\mu}, \kappa) = c_d(\kappa)e^{\kappa\boldsymbol{\
 \end{figure}
 \end{frame}
 
-%page 5
-\begin{frame}{Prepossessing BNP data}
+%page 10
+\begin{frame}{Before clustering! Prepossessing BNP data}
 For BNP data each pixel is its own d-dimensional elemental concentration vector, 
 $$\boldsymbol{X_p} = (X_1, X_2, ..., X_d).$$
 Each component, $X_i$, is that elements concentration for a given pixel and has units $\mu g/cm^2$. 
@@ -102,20 +137,23 @@ Each component, $X_i$, is that elements concentration for a given pixel and has 
     
 \end{frame}
 
-\begin{frame}{Pandas}
-    \includegraphics[width=1\textwidth,height=.7\textheight,keepaspectratio]{dataframe.PNG}
-    \caption{Multiindex Pandas dataframe for storing data and labels.}
-\end{frame}
-
-%page 6
+%page 11
 \begin{frame}{3-D projections of 7-D data.}
 \begin{figure}[h]
   \includegraphics[width=1\textwidth,height=1\textheight,keepaspectratio]{7dto3d.png}
-  \caption{XRF images of mouse fibroblasts.}
+  \caption{XRF images of mouse fibroblasts color coded by dataset.}
 \end{figure}
 \end{frame}
 
-%page 7
+%page 12
+\begin{frame}{Pandas dataframe for XRF clustering}
+\begin{figure}
+    \includegraphics[width=1\textwidth,height=.7\textheight,keepaspectratio]{dataframe.PNG}
+    \caption{Multiindex Pandas dataframe for storing data and labels. In this case a 7D (1 dimension per element) dataset.}
+\end{figure}
+\end{frame}
+
+%page 13
 \begin{frame}{Results and why to preprocess data.}
 \begin{figure}[h]
   \includegraphics[width=1\textwidth,height=.7\textheight,keepaspectratio]{labels_compare_preprocessing.png}
@@ -123,12 +161,15 @@ Each component, $X_i$, is that elements concentration for a given pixel and has 
 \end{figure}
 \end{frame}
 
+%page  14
 \begin{frame}{Pandas results.}
+\begin{figure}
     \includegraphics[width=1\textwidth,height=.7\textheight,keepaspectratio]{dataframe_labeled.PNG}
     \caption{Dataframe with labels and membership.}
+\end{figure}
 \end{frame}
 
-%page 9
+%page 15
 \begin{frame}{Cluster statistics: Median.}
 \begin{figure}[h]
   \includegraphics[width=1\textwidth,height=.5\textheight,keepaspectratio]{Cluster_median.png}
@@ -144,6 +185,7 @@ Each component, $X_i$, is that elements concentration for a given pixel and has 
 \end{itemize}
 \end{frame}
 
+%page 16
 \begin{frame}{Cluster statistics: Correlation.}
 \begin{figure}
     \centering
@@ -153,16 +195,21 @@ Each component, $X_i$, is that elements concentration for a given pixel and has 
 \end{figure}
 \end{frame}
 
+%page 17
 \begin{frame}{Warning: construction ahead.}
-    Everything beyond this point is a work in progress.
+\centering
+\begin{figure}
+\includegraphics[width=1\textwidth,height=.5\textheight,keepaspectratio]{construction.png}
+\caption{I'm still working on the slides beyond this point.}
+\end{figure}
 \end{frame}
 
-%page 10
+%page 18
 \begin{frame}{Extension to 3 spatial dimensions.}
 From the perspective of vMF clustering the extension from 2D to 3D is trivial. Each pixel is represented as a vector independent of its location in the dataset. Therefore the clustering algorithm does not care how many spatial dimensions exist. Some clustering algorithms (SLIC) include proximity as a constraint and need to be fed pixel/voxel indicies, but this has been done.
 \end{frame}
 
-%page 11
+%page 19
 \begin{frame}{Other clustering methods to look into.}
 \begin{itemize}
     \item Simple Linear Iterative Clustering (SLIC)
@@ -175,7 +222,7 @@ From the perspective of vMF clustering the extension from 2D to 3D is trivial. E
 \end{itemize}
 \end{frame}
 
-%page 12
+%page 20
 \begin{frame}{Future.}
 \begin{itemize}
     \item Clusters to polygons. This would be especially useful for 3d clustering visualization for viewing embedded organelles, or for importing geometries with material properties into CAD software (for mechanical or semiconductor samples).
@@ -186,10 +233,11 @@ From the perspective of vMF clustering the extension from 2D to 3D is trivial. E
 
 
 \section{\bibname}
+%page 21
 \begin{frame}[t, allowframebreaks]{\bibname}
 \printbibliography[heading=none]
 \end{frame}
-
+%page 22
 \begin{frame}[plain]
 \vfill
 \centerline{Thank You for Your Attention!}
